@@ -11,11 +11,13 @@ macOS (Apple M1 Max, 10 cores), no CPU pinning, `GOMAXPROCS=4` / `TOKIO_WORKER_T
 | room_show | 1 | 2,803 | 1,384 | 14,681 | 244 | 10,817 | 249 |
 | messages_page | 1 | 3,720 | 1,032 | 17,299 | 207 | 13,439 | 229 |
 | search | 1 | 4,263 | 852 | 12,502 | 290 | 8,033 | 443 |
-| sidebar | 1 | 7,936 | 423 | 15,582 | 219 | 10,049 | 252 |
+| sidebar* | 1 | 7,936 | 423 | 15,582 | 219 | 10,049 | 252 |
 | room_show | 0 | 8,413 | 412 | 10,088 | 313 | 8,831 | 319 |
 | messages_page | 0 | 11,210 | 305 | 14,373 | 255 | 11,542 | 285 |
 | search | 0 | 6,395 | 584 | 11,627 | 309 | 8,237 | 457 |
-| sidebar | 0 | 8,008 | 398 | 16,333 | 220 | 9,965 | 260 |
+| sidebar* | 0 | 8,008 | 398 | 16,333 | 220 | 9,965 | 260 |
+
+\*Not like-for-like against Rust: this Go port returns a 9,462-byte sidebar frame where Rust returns a 30,763-byte page (unchanged by this work; upstream Go already did this). The sidebar rows show Go's own before/after, not a win over Rust. Response bodies on the seed for the other routes, Go vs Rust: room 374,036 vs 416,139 bytes, messages 342,444 vs 383,844, search 135,497 vs 149,625, so those are close but not identical either.
 
 Go before is upstream `8d2f7f2`; Rust is `once-campfire-rust` `ccece30` (after PR #43). The workstation carried other load (load average around 15), so absolute rates move between runs; the before/after and Go/Rust ordering held across every run. These are not the Linux numbers of the published table, which pin four CPUs.
 

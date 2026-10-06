@@ -1,5 +1,20 @@
 # once-campfire-go
 
+## This fork: Go now matches or beats the Rust port
+
+The published comparison put this Go port at 3,860 room pages/s against Rust's 36,260. That benchmark requests gzip, and Go was compressing every ~400 KB page from scratch while the Rust port reuses compressed page parts. This fork fixes that and the other gaps found by profiling. Same seed, same load generator, 16 clients, gzip on:
+
+| Page | Go before | Go after | Rust |
+|---|---:|---:|---:|
+| Room | 2,803 req/s | **14,681 req/s** | 10,817 req/s |
+| Messages | 3,720 | **17,299** | 13,439 |
+| Search | 4,263 | **12,502** | 8,033 |
+| Sidebar* | 7,936 | **15,582** | 10,049 |
+
+Go also uses less CPU per request than Rust on room, messages and search, with gzip on and off. \*The sidebar row is not like-for-like: this Go port (before and after these changes) returns a 9 KB sidebar frame where Rust returns a 30 KB page, so read it as Go's own before/after only. Room, messages and search bodies are within about 10% of Rust's in size. What was slow, every fix, the verification and how to reproduce: **[full report](bench/results/go-vs-rust-macos-20261006/README.md)**. Measured on macOS (M1 Max) without CPU pinning, not the published Linux setup, so compare the ratios rather than the absolute numbers.
+
+---
+
 Campfire in Go, ported from [ONCE Campfire in Rust](https://github.com/basecamp/once-campfire-rust).
 It uses the Go standard library for routing, HTTP, templates, SQL access, cryptography and process
 lifecycle. There is no web framework, ORM, dependency injection container or frontend framework added
@@ -129,8 +144,8 @@ See [`bench/`](bench/) for benchmark tooling and earlier measurements.
 - The response cache uses least-recently-used eviction instead of Rust's sampled eviction. The Go
   message-fragment cache is also independently implemented. It retains versioned message lists
   and sidebar HTML; current membership and permission data are read before cache lookup.
-  Room pages also cache their surrounding HTML keyed by fresh page data, inserting the current
-  messages and refresh timestamp on every request. Responses assemble cached message bytes with fresh page HTML and derive validators from part
+  Room pages also cache their surrounding HTML keyed by fresh page data (including the refresh
+  timestamp, room.updated_at as in Rails), inserting the current messages on every request. Responses assemble cached message bytes with fresh page HTML and derive validators from part
   lengths and hashes, so ETag values differ from both the original Go implementation and Rust.
 - The default version label and fallback VAPID subject identify `once-campfire-go`. Explicit version,
   VAPID keys and subject settings remain supported.

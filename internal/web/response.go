@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"strconv"
 	"sync"
+
+	"github.com/basecamp/once-campfire-go/internal/gzsplice"
 )
 
 var responseBuffers = sync.Pool{New: func() any { return new(bytes.Buffer) }}
@@ -28,6 +30,23 @@ type responseBuffer struct {
 	status    int
 	exception bool
 	parts     [][]byte
+	// digests holds each part's SHA-256 when writeRecorded computed them, so a gzip writer can
+	// splice cached compressed pieces instead of deflating the page again.
+	digests []gzsplice.Digest
+}
+
+// partsWriter finds a gzsplice.PartsWriter under w's wrappers, or nil.
+func partsWriter(w http.ResponseWriter) gzsplice.PartsWriter {
+	for {
+		if pw, ok := w.(gzsplice.PartsWriter); ok {
+			return pw
+		}
+		wrapper, ok := w.(interface{ Unwrap() http.ResponseWriter })
+		if !ok {
+			return nil
+		}
+		w = wrapper.Unwrap()
+	}
 }
 
 func (w *responseBuffer) WriteHeader(status int) {
@@ -54,9 +73,10 @@ func (w *responseBuffer) finish(r *http.Request) {
 	}
 	h := w.Header()
 	digested := false
+	var bodyDigest gzsplice.Digest
 	if !w.exception && (w.status == 200 || w.status == 201) && w.body.Len() > 0 && h.Get("ETag") == "" && h.Get("Last-Modified") == "" {
-		hash := sha256.Sum256(w.body.Bytes())
-		h.Set("ETag", fmt.Sprintf("W/\"%x\"", hash[:16]))
+		bodyDigest = sha256.Sum256(w.body.Bytes())
+		h.Set("ETag", fmt.Sprintf("W/\"%x\"", bodyDigest[:16]))
 		digested = true
 	}
 	if !w.exception && h.Get("Cache-Control") == "" {
@@ -84,6 +104,21 @@ func (w *responseBuffer) finish(r *http.Request) {
 	}
 	w.ResponseWriter.WriteHeader(w.status)
 	if r.Method != "HEAD" && w.status != 204 && w.status != 304 {
+		var spliceable []gzsplice.Part
+		if len(w.parts) > 0 && len(w.digests) == len(w.parts) {
+			spliceable = make([]gzsplice.Part, len(w.parts))
+			for i, part := range w.parts {
+				spliceable[i] = gzsplice.Part{Bytes: part, Digest: w.digests[i]}
+			}
+		} else if len(w.parts) == 0 && digested {
+			// Rust's BodyDigest: a repeated body (the sidebar) is gzipped from the cache.
+			spliceable = []gzsplice.Part{{Bytes: w.body.Bytes(), Digest: bodyDigest}}
+		}
+		if spliceable != nil {
+			if pw := partsWriter(w.ResponseWriter); pw != nil && pw.WriteParts(spliceable) {
+				return
+			}
+		}
 		if len(w.parts) > 0 {
 			for _, part := range w.parts {
 				w.ResponseWriter.Write(part)

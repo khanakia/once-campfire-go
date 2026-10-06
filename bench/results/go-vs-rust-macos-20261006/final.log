@@ -1,0 +1,84 @@
+{"app": "go-before", "rep": 0, "route": "room_show", "gzip": 1, "conc": 16, "rps": 2871.9, "ok": 14374, "p50": 4.463, "p99": 16.847, "cpu_us": 1360.8, "bad": false}
+{"app": "go-before", "rep": 0, "route": "room_show", "gzip": 0, "conc": 16, "rps": 8202.2, "ok": 41022, "p50": 1.761, "p99": 5.275, "cpu_us": 418.3, "bad": false}
+{"app": "go-before", "rep": 0, "route": "messages_page", "gzip": 1, "conc": 16, "rps": 3719.5, "ok": 18612, "p50": 3.623, "p99": 13.135, "cpu_us": 1032.1, "bad": false}
+{"app": "go-before", "rep": 0, "route": "messages_page", "gzip": 0, "conc": 16, "rps": 11209.8, "ok": 56061, "p50": 1.255, "p99": 3.887, "cpu_us": 304.7, "bad": false}
+{"app": "go-before", "rep": 0, "route": "sidebar", "gzip": 1, "conc": 16, "rps": 7935.7, "ok": 39690, "p50": 1.925, "p99": 4.363, "cpu_us": 422.8, "bad": false}
+{"app": "go-before", "rep": 0, "route": "sidebar", "gzip": 0, "conc": 16, "rps": 8008.0, "ok": 40049, "p50": 1.889, "p99": 4.003, "cpu_us": 398.5, "bad": false}
+{"app": "go-before", "rep": 0, "route": "search", "gzip": 1, "conc": 16, "rps": 4262.8, "ok": 21336, "p50": 2.995, "p99": 11.999, "cpu_us": 851.6, "bad": false}
+{"app": "go-before", "rep": 0, "route": "search", "gzip": 0, "conc": 16, "rps": 6394.6, "ok": 31985, "p50": 2.405, "p99": 4.851, "cpu_us": 584.0, "bad": false}
+{"app": "go-after", "rep": 0, "route": "room_show", "gzip": 1, "conc": 16, "rps": 14680.6, "ok": 73415, "p50": 0.965, "p99": 3.037, "cpu_us": 243.8, "bad": false}
+{"app": "go-after", "rep": 0, "route": "room_show", "gzip": 0, "conc": 16, "rps": 9127.3, "ok": 45683, "p50": 1.322, "p99": 9.127, "cpu_us": 314.8, "bad": false}
+{"app": "go-after", "rep": 0, "route": "messages_page", "gzip": 1, "conc": 16, "rps": 2902.8, "ok": 14530, "p50": 3.103, "p99": 31.295, "cpu_us": 276.7, "bad": false}
+{"app": "go-after", "rep": 0, "route": "messages_page", "gzip": 0, "conc": 16, "rps": 10151.9, "ok": 50769, "p50": 1.118, "p99": 8.855, "cpu_us": 275.0, "bad": false}
+{"app": "go-after", "rep": 0, "route": "sidebar", "gzip": 1, "conc": 16, "rps": 14463.1, "ok": 72326, "p50": 0.909, "p99": 3.819, "cpu_us": 220.7, "bad": false}
+{"app": "go-after", "rep": 0, "route": "sidebar", "gzip": 0, "conc": 16, "rps": 10772.9, "ok": 53873, "p50": 1.213, "p99": 5.175, "cpu_us": 247.4, "bad": false}
+{"app": "go-after", "rep": 0, "route": "search", "gzip": 1, "conc": 16, "rps": 9641.4, "ok": 48249, "p50": 1.385, "p99": 5.511, "cpu_us": 324.8, "bad": false}
+{"app": "go-after", "rep": 0, "route": "search", "gzip": 0, "conc": 16, "rps": 8422.9, "ok": 42130, "p50": 1.483, "p99": 8.207, "cpu_us": 350.6, "bad": false}
+{"app": "rust", "rep": 0, "route": "room_show", "gzip": 1, "conc": 16, "rps": 10480.5, "ok": 52416, "p50": 1.338, "p99": 4.739, "cpu_us": 253.7, "bad": false}
+{"app": "rust", "rep": 0, "route": "room_show", "gzip": 0, "conc": 16, "rps": 8830.9, "ok": 44198, "p50": 1.588, "p99": 5.715, "cpu_us": 322.0, "bad": false}
+{"app": "rust", "rep": 0, "route": "messages_page", "gzip": 1, "conc": 16, "rps": 11815.5, "ok": 59087, "p50": 1.218, "p99": 4.335, "cpu_us": 234.2, "bad": false}
+{"app": "rust", "rep": 0, "route": "messages_page", "gzip": 0, "conc": 16, "rps": 9498.2, "ok": 47507, "p50": 1.529, "p99": 4.639, "cpu_us": 300.0, "bad": false}
+{"app": "rust", "rep": 0, "route": "sidebar", "gzip": 1, "conc": 16, "rps": 9581.1, "ok": 47915, "p50": 1.455, "p99": 5.191, "cpu_us": 273.8, "bad": false}
+{"app": "rust", "rep": 0, "route": "sidebar", "gzip": 0, "conc": 16, "rps": 9965.2, "ok": 49839, "p50": 1.391, "p99": 4.951, "cpu_us": 270.1, "bad": false}
+{"app": "rust", "rep": 0, "route": "search", "gzip": 1, "conc": 16, "rps": 8033.3, "ok": 40179, "p50": 1.862, "p99": 4.779, "cpu_us": 442.8, "bad": false}
+{"app": "rust", "rep": 0, "route": "search", "gzip": 0, "conc": 16, "rps": 7601.3, "ok": 38024, "p50": 1.867, "p99": 5.947, "cpu_us": 437.6, "bad": false}
+{"app": "rust", "rep": 1, "route": "room_show", "gzip": 1, "conc": 16, "rps": 10817.1, "ok": 54098, "p50": 1.286, "p99": 5.471, "cpu_us": 249.4, "bad": false}
+{"app": "rust", "rep": 1, "route": "room_show", "gzip": 0, "conc": 16, "rps": 8813.1, "ok": 44080, "p50": 1.595, "p99": 5.635, "cpu_us": 319.4, "bad": false}
+{"app": "rust", "rep": 1, "route": "messages_page", "gzip": 1, "conc": 16, "rps": 13439.2, "ok": 67210, "p50": 1.141, "p99": 2.301, "cpu_us": 228.8, "bad": false}
+{"app": "rust", "rep": 1, "route": "messages_page", "gzip": 0, "conc": 16, "rps": 11541.6, "ok": 57721, "p50": 1.322, "p99": 2.711, "cpu_us": 285.0, "bad": false}
+{"app": "rust", "rep": 1, "route": "sidebar", "gzip": 1, "conc": 16, "rps": 10049.3, "ok": 50260, "p50": 1.288, "p99": 7.663, "cpu_us": 251.7, "bad": false}
+{"app": "rust", "rep": 1, "route": "sidebar", "gzip": 0, "conc": 16, "rps": 9160.6, "ok": 45812, "p50": 1.409, "p99": 7.751, "cpu_us": 260.4, "bad": false}
+{"app": "rust", "rep": 1, "route": "search", "gzip": 1, "conc": 16, "rps": 7599.2, "ok": 38002, "p50": 1.767, "p99": 8.743, "cpu_us": 427.3, "bad": false}
+{"app": "rust", "rep": 1, "route": "search", "gzip": 0, "conc": 16, "rps": 8236.9, "ok": 41201, "p50": 1.797, "p99": 5.415, "cpu_us": 457.0, "bad": false}
+{"app": "go-after", "rep": 1, "route": "room_show", "gzip": 1, "conc": 16, "rps": 9256.8, "ok": 46293, "p50": 1.237, "p99": 8.807, "cpu_us": 275.6, "bad": false}
+{"app": "go-after", "rep": 1, "route": "room_show", "gzip": 0, "conc": 16, "rps": 10088.0, "ok": 50457, "p50": 1.292, "p99": 6.087, "cpu_us": 313.3, "bad": false}
+{"app": "go-after", "rep": 1, "route": "messages_page", "gzip": 1, "conc": 16, "rps": 17299.3, "ok": 86513, "p50": 0.776, "p99": 2.853, "cpu_us": 207.1, "bad": false}
+{"app": "go-after", "rep": 1, "route": "messages_page", "gzip": 0, "conc": 16, "rps": 14372.6, "ok": 71887, "p50": 0.931, "p99": 3.421, "cpu_us": 254.7, "bad": false}
+{"app": "go-after", "rep": 1, "route": "sidebar", "gzip": 1, "conc": 16, "rps": 15582.3, "ok": 77922, "p50": 0.901, "p99": 2.759, "cpu_us": 218.7, "bad": false}
+{"app": "go-after", "rep": 1, "route": "sidebar", "gzip": 0, "conc": 16, "rps": 16333.4, "ok": 81681, "p50": 0.892, "p99": 2.499, "cpu_us": 219.6, "bad": false}
+{"app": "go-after", "rep": 1, "route": "search", "gzip": 1, "conc": 16, "rps": 12502.5, "ok": 62527, "p50": 1.124, "p99": 3.593, "cpu_us": 290.4, "bad": false}
+{"app": "go-after", "rep": 1, "route": "search", "gzip": 0, "conc": 16, "rps": 11627.3, "ok": 58156, "p50": 1.187, "p99": 3.911, "cpu_us": 309.0, "bad": false}
+{"app": "go-before", "rep": 1, "route": "room_show", "gzip": 1, "conc": 16, "rps": 2802.9, "ok": 14039, "p50": 4.479, "p99": 18.207, "cpu_us": 1384.0, "bad": false}
+{"app": "go-before", "rep": 1, "route": "room_show", "gzip": 0, "conc": 16, "rps": 8412.6, "ok": 42076, "p50": 1.74, "p99": 4.943, "cpu_us": 411.6, "bad": false}
+{"app": "go-before", "rep": 1, "route": "messages_page", "gzip": 1, "conc": 16, "rps": 3482.1, "ok": 17424, "p50": 3.771, "p99": 15.431, "cpu_us": 1054.3, "bad": false}
+{"app": "go-before", "rep": 1, "route": "messages_page", "gzip": 0, "conc": 16, "rps": 10261.7, "ok": 51319, "p50": 1.354, "p99": 4.719, "cpu_us": 316.1, "bad": false}
+{"app": "go-before", "rep": 1, "route": "sidebar", "gzip": 1, "conc": 16, "rps": 7393.6, "ok": 37061, "p50": 1.968, "p99": 5.379, "cpu_us": 432.0, "bad": false}
+{"app": "go-before", "rep": 1, "route": "sidebar", "gzip": 0, "conc": 16, "rps": 7686.1, "ok": 38442, "p50": 1.978, "p99": 4.147, "cpu_us": 423.8, "bad": false}
+{"app": "go-before", "rep": 1, "route": "search", "gzip": 1, "conc": 16, "rps": 4095.3, "ok": 20486, "p50": 3.097, "p99": 12.231, "cpu_us": 866.9, "bad": false}
+{"app": "go-before", "rep": 1, "route": "search", "gzip": 0, "conc": 16, "rps": 5922.6, "ok": 29624, "p50": 2.567, "p99": 5.631, "cpu_us": 618.1, "bad": false}
+{"app": "go-before", "rep": 2, "route": "room_show", "gzip": 1, "conc": 16, "rps": 2536.8, "ok": 12703, "p50": 4.763, "p99": 22.111, "cpu_us": 1445.3, "bad": false}
+{"app": "go-before", "rep": 2, "route": "room_show", "gzip": 0, "conc": 16, "rps": 8465.0, "ok": 42339, "p50": 1.723, "p99": 4.947, "cpu_us": 409.1, "bad": false}
+{"app": "go-before", "rep": 2, "route": "messages_page", "gzip": 1, "conc": 16, "rps": 3865.4, "ok": 19343, "p50": 3.097, "p99": 12.935, "cpu_us": 1002.9, "bad": false}
+{"app": "go-before", "rep": 2, "route": "messages_page", "gzip": 0, "conc": 16, "rps": 11674.7, "ok": 58389, "p50": 1.207, "p99": 3.843, "cpu_us": 300.6, "bad": false}
+{"app": "go-before", "rep": 2, "route": "sidebar", "gzip": 1, "conc": 16, "rps": 8605.2, "ok": 43037, "p50": 1.753, "p99": 4.299, "cpu_us": 385.7, "bad": false}
+{"app": "go-before", "rep": 2, "route": "sidebar", "gzip": 0, "conc": 16, "rps": 8860.8, "ok": 44318, "p50": 1.737, "p99": 3.395, "cpu_us": 375.7, "bad": false}
+{"app": "go-before", "rep": 2, "route": "search", "gzip": 1, "conc": 16, "rps": 4739.6, "ok": 23717, "p50": 2.651, "p99": 10.767, "cpu_us": 791.4, "bad": false}
+{"app": "go-before", "rep": 2, "route": "search", "gzip": 0, "conc": 16, "rps": 6811.3, "ok": 34064, "p50": 2.275, "p99": 4.231, "cpu_us": 561.0, "bad": false}
+{"app": "go-after", "rep": 2, "route": "room_show", "gzip": 1, "conc": 16, "rps": 15544.3, "ok": 77740, "p50": 0.917, "p99": 2.805, "cpu_us": 232.7, "bad": false}
+{"app": "go-after", "rep": 2, "route": "room_show", "gzip": 0, "conc": 16, "rps": 12931.6, "ok": 64673, "p50": 1.085, "p99": 3.287, "cpu_us": 293.3, "bad": false}
+{"app": "go-after", "rep": 2, "route": "messages_page", "gzip": 1, "conc": 16, "rps": 18019.3, "ok": 90111, "p50": 0.757, "p99": 2.637, "cpu_us": 203.5, "bad": false}
+{"app": "go-after", "rep": 2, "route": "messages_page", "gzip": 0, "conc": 16, "rps": 15305.4, "ok": 76540, "p50": 0.882, "p99": 3.059, "cpu_us": 249.4, "bad": false}
+{"app": "go-after", "rep": 2, "route": "sidebar", "gzip": 1, "conc": 16, "rps": 16897.4, "ok": 84504, "p50": 0.862, "p99": 2.345, "cpu_us": 212.3, "bad": false}
+{"app": "go-after", "rep": 2, "route": "sidebar", "gzip": 0, "conc": 16, "rps": 16495.0, "ok": 82491, "p50": 0.885, "p99": 2.493, "cpu_us": 219.3, "bad": false}
+{"app": "go-after", "rep": 2, "route": "search", "gzip": 1, "conc": 16, "rps": 12775.0, "ok": 63891, "p50": 1.103, "p99": 3.511, "cpu_us": 288.5, "bad": false}
+{"app": "go-after", "rep": 2, "route": "search", "gzip": 0, "conc": 16, "rps": 12076.4, "ok": 60396, "p50": 1.151, "p99": 3.737, "cpu_us": 302.7, "bad": false}
+{"app": "rust", "rep": 2, "route": "room_show", "gzip": 1, "conc": 16, "rps": 14559.2, "ok": 72813, "p50": 1.067, "p99": 1.945, "cpu_us": 223.4, "bad": false}
+{"app": "rust", "rep": 2, "route": "room_show", "gzip": 0, "conc": 16, "rps": 11510.5, "ok": 57564, "p50": 1.341, "p99": 2.519, "cpu_us": 299.3, "bad": false}
+{"app": "rust", "rep": 2, "route": "messages_page", "gzip": 1, "conc": 16, "rps": 14657.2, "ok": 73301, "p50": 1.057, "p99": 1.856, "cpu_us": 216.8, "bad": false}
+{"app": "rust", "rep": 2, "route": "messages_page", "gzip": 0, "conc": 16, "rps": 12228.1, "ok": 61152, "p50": 1.271, "p99": 2.261, "cpu_us": 278.6, "bad": false}
+{"app": "rust", "rep": 2, "route": "sidebar", "gzip": 1, "conc": 16, "rps": 13896.1, "ok": 69492, "p50": 1.109, "p99": 2.093, "cpu_us": 232.0, "bad": false}
+{"app": "rust", "rep": 2, "route": "sidebar", "gzip": 0, "conc": 16, "rps": 14294.3, "ok": 71484, "p50": 1.077, "p99": 2.057, "cpu_us": 225.9, "bad": false}
+{"app": "rust", "rep": 2, "route": "search", "gzip": 1, "conc": 16, "rps": 9526.0, "ok": 47642, "p50": 1.659, "p99": 2.365, "cpu_us": 497.0, "bad": false}
+{"app": "rust", "rep": 2, "route": "search", "gzip": 0, "conc": 16, "rps": 9380.1, "ok": 46910, "p50": 1.687, "p99": 2.419, "cpu_us": 507.4, "bad": false}
+
+| route | gzip | c | go-before req/s | go-before CPU µs | go-after req/s | go-after CPU µs | rust req/s | rust CPU µs |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| messages_page | 0 | 16 | 11,210 | 305 | 14,373 | 255 | 11,542 | 285 |
+| messages_page | 1 | 16 | 3,720 | 1,032 | 17,299 | 207 | 13,439 | 229 |
+| room_show | 0 | 16 | 8,413 | 412 | 10,088 | 313 | 8,831 | 319 |
+| room_show | 1 | 16 | 2,803 | 1,384 | 14,681 | 244 | 10,817 | 249 |
+| search | 0 | 16 | 6,395 | 584 | 11,627 | 309 | 8,237 | 457 |
+| search | 1 | 16 | 4,263 | 852 | 12,502 | 290 | 8,033 | 443 |
+| sidebar | 0 | 16 | 8,008 | 398 | 16,333 | 220 | 9,965 | 260 |
+| sidebar | 1 | 16 | 7,936 | 423 | 15,582 | 219 | 10,049 | 252 |
+BENCH-DONE

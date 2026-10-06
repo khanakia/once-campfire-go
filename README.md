@@ -20,11 +20,12 @@ The pinned Rust source is in `reference/`, with its Rails source in `reference/r
 ## Dependencies
 
 - Go 1.27.1: `net/http`, `html/template`, `database/sql`, `crypto`, `encoding/json`, `embed`, `testing`.
-- `github.com/mattn/go-sqlite3`: SQLite with FTS5, through CGO.
+- `github.com/mattn/go-sqlite3`: SQLite with FTS5, through CGO. `bin/build`, `bin/check` and the Dockerfile compile it with `CGO_CFLAGS="-O2 -g -DSQLITE_DEFAULT_MEMSTATUS=0"`: SQLite's memory statistics put one process-wide mutex on every allocation, which was the main contention under concurrent reads. A custom build should set the same flag.
 - `github.com/coder/websocket`: WebSocket transport; the Action Cable protocol and channels are local code.
 - `golang.org/x/crypto`: bcrypt and ACME. The pinned revision includes the upstream ACME missing-Location fix.
 - `golang.org/x/net`: HTTP/2 and HTML tokenization; a local tree-builder fork matches the reference parser.
 - `golang.org/x/text`: indirect Unicode support.
+- `github.com/klauspost/compress`: gzip/deflate for Rack::Deflater responses, several times faster than `compress/gzip`; `internal/gzsplice` reuses compressed page parts across requests.
 - Native libvips, ffmpeg/ffprobe and libzstd: image/video processing and public HTTP zstd compression.
 
 A local build needs a C compiler, pkg-config, libvips and libzstd development headers, ffmpeg, and

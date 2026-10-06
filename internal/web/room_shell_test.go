@@ -2,9 +2,9 @@ package web
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"github.com/basecamp/once-campfire-go/internal/database"
 	"html/template"
-	"strings"
 	"testing"
 )
 
@@ -17,13 +17,16 @@ func TestRoomShellPreservesBytesAndRequestData(t *testing.T) {
 		if err := app.templates.ExecuteTemplate(&expected, "room", p); err != nil {
 			t.Fatal(err)
 		}
-		shell, marker, err := app.roomShell(p)
+		shell, err := app.roomShell(p)
 		if err != nil {
 			t.Fatal(err)
 		}
-		actual := strings.ReplaceAll(shell, marker, string(p.MessagesHTML))
+		actual := shell.before + string(p.MessagesHTML) + shell.after
 		if actual != expected.String() {
 			t.Fatal("cached room shell differs from uncached template")
+		}
+		if shell.beforeDigest != sha256.Sum256([]byte(shell.before)) || shell.afterDigest != sha256.Sum256([]byte(shell.after)) {
+			t.Fatal("room shell digests do not match its parts")
 		}
 	}
 	check(base)

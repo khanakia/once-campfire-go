@@ -36,13 +36,24 @@ func (p *readPool) statement(ctx context.Context, query string) *sql.Stmt {
 	p.statements[query] = statement
 	return statement
 }
+
+// detached drops ctx's cancellation for a read. database/sql starts a goroutine for every query
+// whose context can be cancelled (Rows.awaitDone) and wakes it when the rows close, so with the
+// request context each read cost a goroutine and a cross-thread wakeup; at one client that was a
+// third of a sidebar request's CPU. Reads are short, and like the Rust reference (whose queued
+// reads run to completion) a read is not interrupted when its client goes away. Values (request
+// data such as tracing) are kept.
+func detached(ctx context.Context) context.Context { return context.WithoutCancel(ctx) }
+
 func (p *readPool) QueryContext(ctx context.Context, query string, args ...any) (*sql.Rows, error) {
+	ctx = detached(ctx)
 	if statement := p.statement(ctx, query); statement != nil {
 		return statement.QueryContext(ctx, args...)
 	}
 	return p.DB.QueryContext(ctx, query, args...)
 }
 func (p *readPool) QueryRowContext(ctx context.Context, query string, args ...any) *sql.Row {
+	ctx = detached(ctx)
 	if statement := p.statement(ctx, query); statement != nil {
 		return statement.QueryRowContext(ctx, args...)
 	}

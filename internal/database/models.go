@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"slices"
 	"strings"
 	"time"
 )
@@ -73,6 +74,17 @@ func (d *DB) UserByEmail(ctx context.Context, email string) (User, error) {
 }
 func (d *DB) SessionUser(ctx context.Context, token string) (User, error) {
 	return userRow(d.Read.QueryRowContext(ctx, "SELECT "+userColumns+" FROM users u JOIN sessions s ON s.user_id=u.id WHERE s.token=? AND u.status=0", token))
+}
+
+// SessionUserActivity is SessionUser plus the session's last_active_at, read in the same
+// statement so authentication can decide whether to refresh the session (RefreshSessionAt)
+// without a second query: every authenticated request does both.
+func (d *DB) SessionUserActivity(ctx context.Context, token string) (User, time.Time, error) {
+	var u User
+	var active time.Time
+	err := d.Read.QueryRowContext(ctx, "SELECT "+userColumns+",s.last_active_at FROM users u JOIN sessions s ON s.user_id=u.id WHERE s.token=? AND u.status=0", token).
+		Scan(&u.ID, &u.Name, &u.Email, &u.Password, &u.Role, &u.Status, &u.Bio, timestamp{&u.UpdatedAt}, &u.BotToken, timestamp{&active})
+	return u, active, err
 }
 func (d *DB) StartSession(ctx context.Context, user int64, agent, ip string) (string, error) {
 	token, now := Token(), Stamp(d.Now())
@@ -276,15 +288,27 @@ func (d *DB) createMessage(ctx context.Context, user, room int64, client string,
 	}
 	return m, err
 }
-func (d *DB) Search(ctx context.Context, user int64, query string) ([]Message, error) {
+
+// searchMatch is the FTS5 MATCH expression for a search: each word quoted, so punctuation and
+// operators in what people type are matched literally. Empty means nothing to search for.
+func searchMatch(query string) string {
 	words := strings.Fields(SearchQuery(query))
-	if len(words) == 0 {
-		return []Message{}, nil
-	}
 	for i, w := range words {
 		words[i] = "\"" + strings.ReplaceAll(w, "\"", "\"\"") + "\""
 	}
-	rows, err := d.Read.QueryContext(ctx, messageSelect+"JOIN message_search_index idx ON idx.rowid=m.id JOIN memberships member ON member.room_id=m.room_id WHERE member.user_id=? AND idx.body MATCH ? ORDER BY m.created_at DESC LIMIT 100", user, strings.Join(words, " "))
+	return strings.Join(words, " ")
+}
+
+// searchReachable is the FROM/WHERE/ORDER of `Current.user.reachable_messages.search(q).last(100)`,
+// shared by Search and SearchReferences so both always find the same messages.
+const searchReachable = "JOIN message_search_index idx ON idx.rowid=m.id JOIN memberships member ON member.room_id=m.room_id WHERE member.user_id=? AND idx.body MATCH ? ORDER BY m.created_at DESC LIMIT 100"
+
+func (d *DB) Search(ctx context.Context, user int64, query string) ([]Message, error) {
+	match := searchMatch(query)
+	if match == "" {
+		return []Message{}, nil
+	}
+	rows, err := d.Read.QueryContext(ctx, messageSelect+searchReachable, user, match)
 	if err != nil {
 		return nil, err
 	}
@@ -293,6 +317,32 @@ func (d *DB) Search(ctx context.Context, user int64, query string) ([]Message, e
 		messages[i], messages[j] = messages[j], messages[i]
 	}
 	return messages, err
+}
+
+// SearchReferences is Search returning only what the fragment cache keys on (id, room,
+// updated_at), oldest first, like MessagePageReferences: rendered messages come from the cache,
+// and only misses load their bodies and authors (messageItems hydrates messages whose CreatorID
+// is zero). Search joined every hit's rich-text body and author on every request.
+func (d *DB) SearchReferences(ctx context.Context, user int64, query string) ([]Message, error) {
+	match := searchMatch(query)
+	if match == "" {
+		return []Message{}, nil
+	}
+	rows, err := d.Read.QueryContext(ctx, "SELECT m.id,m.room_id,m.updated_at FROM messages m "+searchReachable, user, match)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var messages []Message
+	for rows.Next() {
+		var message Message
+		if err := rows.Scan(&message.ID, &message.RoomID, timestamp{&message.UpdatedAt}); err != nil {
+			return nil, err
+		}
+		messages = append(messages, message)
+	}
+	slices.Reverse(messages)
+	return messages, rows.Err()
 }
 
 // AuthorizedSessions checks a publication's distinct sessions in one snapshot.

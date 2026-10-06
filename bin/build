@@ -2,7 +2,9 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 mkdir -p .cache/tmp .cache/go-build
-export TMPDIR="$PWD/.cache/tmp" GOCACHE="$PWD/.cache/go-build" CGO_ENABLED=1
+# SQLite memory statistics take one process-wide mutex on every allocation; nothing here reads them, and
+# under concurrent reads that mutex was the main contention (see internal/database/build_flags_test.go).
+export TMPDIR="$PWD/.cache/tmp" GOCACHE="$PWD/.cache/go-build" CGO_ENABLED=1 CGO_CFLAGS="-O2 -g -DSQLITE_DEFAULT_MEMSTATUS=0"
 if ! command -v go >/dev/null; then exec mise exec go@1.27.1 -- "$0" "$@"; fi
 python3 bin/build-assets
 go build -tags sqlite_fts5 -trimpath -o campfire ./cmd/campfire

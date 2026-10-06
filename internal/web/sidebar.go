@@ -43,45 +43,63 @@ func (r sidebarRoom) Label() string {
 	return strings.Join(names, "")
 }
 func (s *Server) displayRoom(ctx context.Context, room database.Room, user database.User) (sidebarRoom, error) {
+	if room.Type != "Rooms::Direct" {
+		return sidebarRoom{Room: room}, nil
+	}
+	members, err := s.DB.RoomMembers(ctx, room.ID)
+	if err != nil {
+		return sidebarRoom{Room: room}, err
+	}
+	return directRoomView(room, user, members), nil
+}
+
+// directRoomView is users/sidebars/rooms/_direct's
+// `room.users.without(membership.user).presence || [ membership.user ]`, and the name built from it.
+func directRoomView(room database.Room, user database.User, members []database.User) sidebarRoom {
 	view := sidebarRoom{Room: room}
-	if room.Type == "Rooms::Direct" {
-		members, err := s.DB.RoomMembers(ctx, room.ID)
-		if err != nil {
-			return view, err
-		}
-		var names []string
-		for _, member := range members {
-			if member.ID != user.ID {
-				view.Members = append(view.Members, member)
-				names = append(names, member.Name)
-			}
-		}
-		if len(view.Members) == 0 {
-			view.Members = []database.User{user}
-			view.Name = user.Name
-		} else {
-			switch len(names) {
-			case 1:
-				view.Name = names[0]
-			case 2:
-				view.Name = names[0] + " and " + names[1]
-			default:
-				view.Name = strings.Join(names[:len(names)-1], ", ") + ", and " + names[len(names)-1]
-			}
+	var names []string
+	for _, member := range members {
+		if member.ID != user.ID {
+			view.Members = append(view.Members, member)
+			names = append(names, member.Name)
 		}
 	}
-	return view, nil
+	if len(view.Members) == 0 {
+		view.Members = []database.User{user}
+		view.Name = user.Name
+	} else {
+		switch len(names) {
+		case 1:
+			view.Name = names[0]
+		case 2:
+			view.Name = names[0] + " and " + names[1]
+		default:
+			view.Name = strings.Join(names[:len(names)-1], ", ") + ", and " + names[len(names)-1]
+		}
+	}
+	return view
 }
+
 func (s *Server) sidebarRooms(ctx context.Context, user database.User) ([]sidebarRoom, error) {
 	rooms, err := s.DB.SidebarRooms(ctx, user.ID)
 	if err != nil {
 		return nil, err
 	}
+	var direct map[int64][]database.User
+	for _, room := range rooms {
+		if room.Type == "Rooms::Direct" {
+			// One query for every direct room's members, instead of one per room.
+			if direct, err = s.DB.DirectRoomMembers(ctx, user.ID); err != nil {
+				return nil, err
+			}
+			break
+		}
+	}
 	var result []sidebarRoom
 	for _, room := range rooms {
-		view, err := s.displayRoom(ctx, room.Room, user)
-		if err != nil {
-			return nil, err
+		view := sidebarRoom{Room: room.Room}
+		if room.Type == "Rooms::Direct" {
+			view = directRoomView(room.Room, user, direct[room.ID])
 		}
 		view.Involvement, view.Unread = room.Involvement, room.Unread
 		result = append(result, view)

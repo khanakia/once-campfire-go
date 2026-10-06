@@ -370,7 +370,10 @@ func (s *Server) render(w http.ResponseWriter, r *http.Request, name string, sta
 	if s.Push.VAPID != nil {
 		p.VAPIDPublicKey = s.Push.VAPID.PublicKey()
 	}
-	p.LoadedAt = strconv.FormatInt(s.DB.Now().UnixMilli(), 10)
+	// messages_helper.rb: refresh_room_loaded_at_value is room.updated_at.to_fs(:epoch), which
+	// message writes touch. It is not the request time: a per-request value made every room page
+	// unique, so neither the room-shell cache nor gzip splicing could reuse it.
+	p.LoadedAt = strconv.FormatInt(p.Room.UpdatedAt.UnixMilli(), 10)
 	p.Origin = s.origin(r)
 	p.CanCreateRooms = p.User.Role == 1 || !a.RestrictRooms()
 	if p.Chat || name == "search" || name == "welcome" {
@@ -413,13 +416,13 @@ func (s *Server) render(w http.ResponseWriter, r *http.Request, name string, sta
 		p.ReturnRoom, _ = s.lastRoom(r, p.User.ID)
 	}
 	if name == "room" && recorded != nil {
-		shell, marker, err := s.roomShell(p)
+		shell, err := s.roomShell(p)
 		if err != nil {
 			s.fail(w, err)
 			return
 		}
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		writeRecorded(w, status, shell, marker, *recorded)
+		writeRecordedParts(w, status, shell.before, shell.beforeDigest, shell.after, shell.afterDigest, *recorded)
 		return
 	}
 	sidebarKey := ""
@@ -475,7 +478,7 @@ func (s *Server) auth(next func(http.ResponseWriter, *http.Request, database.Use
 			s.requestAuthentication(w, r)
 			return
 		}
-		u, err := s.DB.SessionUser(r.Context(), token)
+		u, active, err := s.DB.SessionUserActivity(r.Context(), token)
 		if errors.Is(err, sql.ErrNoRows) {
 			s.requestAuthentication(w, r)
 			return
@@ -484,7 +487,7 @@ func (s *Server) auth(next func(http.ResponseWriter, *http.Request, database.Use
 			s.fail(w, err)
 			return
 		}
-		refreshed, err := s.DB.RefreshSession(r.Context(), token, r.UserAgent(), remoteIP(r))
+		refreshed, err := s.DB.RefreshSessionAt(r.Context(), token, active, r.UserAgent(), remoteIP(r))
 		if err != nil {
 			s.fail(w, err)
 			return
@@ -848,7 +851,7 @@ func (s *Server) search(w http.ResponseWriter, r *http.Request, u database.User)
 		s.fail(w, err)
 		return
 	}
-	messages, err := s.DB.Search(r.Context(), u.ID, q)
+	messages, err := s.DB.SearchReferences(r.Context(), u.ID, q)
 	if err != nil {
 		s.fail(w, err)
 		return

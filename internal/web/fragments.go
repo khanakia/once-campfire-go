@@ -12,12 +12,13 @@ import (
 )
 
 type fragmentEntry struct {
-	key                         string
-	html                        template.HTML
-	bytes                       int
-	digest                      [32]byte
-	payload                     []byte
-	messageMarker, loadedMarker string
+	key     string
+	html    template.HTML
+	bytes   int
+	digest  [32]byte
+	payload []byte
+	// shell is set on room-shell entries: html split around its message list (see roomShell).
+	shell *roomShellParts
 }
 type fragmentCache struct {
 	mu           sync.Mutex
@@ -57,7 +58,7 @@ func (c *fragmentCache) putEntry(entry fragmentEntry) fragmentEntry {
 		c.order.MoveToFront(e)
 		return e.Value.(fragmentEntry)
 	}
-	size := len(key) + len(html) + len(entry.messageMarker) + len(entry.loadedMarker) + 240
+	size := len(key) + len(html) + 240
 	var payload []byte
 	if strings.HasPrefix(key, "message-list/") {
 		payload = []byte(html)

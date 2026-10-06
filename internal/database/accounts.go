@@ -259,11 +259,18 @@ func (d *DB) BannedIP(ctx context.Context, ip string) (bool, error) {
 	return n > 0, err
 }
 func (d *DB) RefreshSession(ctx context.Context, token, agent, ip string) (bool, error) {
-	now := d.Now()
 	var active time.Time
 	if err := d.Read.QueryRowContext(ctx, "SELECT last_active_at FROM sessions WHERE token=?", token).Scan(timestamp{&active}); err != nil {
 		return false, err
 	}
+	return d.RefreshSessionAt(ctx, token, active, agent, ip)
+}
+
+// RefreshSessionAt is RefreshSession for a caller that already read the session's last_active_at
+// (SessionUserActivity). The UPDATE re-checks last_active_at, so a stale active value can at most
+// cause a no-op write, never a double refresh.
+func (d *DB) RefreshSessionAt(ctx context.Context, token string, active time.Time, agent, ip string) (bool, error) {
+	now := d.Now()
 	if !active.Before(now.Add(-time.Hour)) {
 		return false, nil
 	}
@@ -288,6 +295,27 @@ func (d *DB) AccountUsers(ctx context.Context, includeBanned bool) ([]User, erro
 	return usersRows(rows)
 }
 
+// DirectRoomMembers returns the members of every direct room user belongs to, by room, in one
+// query: the sidebar needs them for each direct room, and asking RoomMembers per room made one
+// query per conversation on every sidebar request. Members come in user id order, the order
+// RoomMembers' plan (the room_id,user_id covering index) gives, so names join the same way.
+func (d *DB) DirectRoomMembers(ctx context.Context, user int64) (map[int64][]User, error) {
+	rows, err := d.Read.QueryContext(ctx, "SELECT m.room_id,"+userColumns+" FROM memberships m JOIN users u ON u.id=m.user_id WHERE m.room_id IN (SELECT mine.room_id FROM memberships mine JOIN rooms r ON r.id=mine.room_id WHERE mine.user_id=? AND r.type='Rooms::Direct') ORDER BY m.room_id,m.user_id", user)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	members := map[int64][]User{}
+	for rows.Next() {
+		var room int64
+		var u User
+		if err := rows.Scan(&room, &u.ID, &u.Name, &u.Email, &u.Password, &u.Role, &u.Status, &u.Bio, timestamp{&u.UpdatedAt}, &u.BotToken); err != nil {
+			return nil, err
+		}
+		members[room] = append(members[room], u)
+	}
+	return members, rows.Err()
+}
 func (d *DB) RoomMembers(ctx context.Context, room int64) ([]User, error) {
 	rows, err := d.Read.QueryContext(ctx, "SELECT "+userColumns+" FROM users u JOIN memberships m ON m.user_id=u.id WHERE m.room_id=?", room)
 	if err != nil {

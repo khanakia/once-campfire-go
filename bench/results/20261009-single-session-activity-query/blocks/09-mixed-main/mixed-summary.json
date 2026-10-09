@@ -1,0 +1,85 @@
+{
+  "metadata": {
+    "verification_revision": "e2440515d9093b8304da3d7662d8526f3234b047",
+    "response_validation": "route-contract-v1",
+    "started_at": "2026-10-09T05:55:06Z",
+    "seed_sha256": "8dcc238c1888e74f87b78b15ee3e647661b05734e6cb5955558f0a1822f5b25c",
+    "server_cpus": "2-5",
+    "client_cpus": "6-9",
+    "network": "host",
+    "gzip": true,
+    "duration": 8,
+    "concurrencies": "16",
+    "rounds": 2,
+    "loadgen_sha256": "9d72dddf12dd8362c4f01036768dfed5d44120416f61eade123262b6301e61fc",
+    "routes": "room_show,messages_page,sidebar,search",
+    "profile": "mixed-read-write-v1",
+    "mixed_writer": {
+      "clients": 1,
+      "maximum_writes_per_second": 10,
+      "room": 201306877,
+      "catch_up": false
+    },
+    "images": {
+      "go": "sha256:21efd64e14aa3dd753915c82e14cf7d8ae71ee14f01ee3cccd3b56c34924bd5d"
+    },
+    "image_labels": {
+      "go": {
+        "org.opencontainers.image.description": "",
+        "org.opencontainers.image.licenses": "MIT",
+        "org.opencontainers.image.source": "https://github.com/basecamp/once-campfire-go"
+      }
+    },
+    "source_revisions": {
+      "go": {
+        "head": "9b0ef062ea9732c6f611b705d77b52aeec31301f",
+        "dirty": false
+      }
+    },
+    "preflight_only": false,
+    "topology": {
+      "go": {
+        "processes": 1,
+        "cable": "native websocket",
+        "jobs": "in-process",
+        "response_cache_mb": "64"
+      }
+    },
+    "runtimes": {
+      "go": "go"
+    },
+    "complete": true
+  },
+  "mixed_results": {
+    "go": {
+      "room_show": {
+        "median_rps": 16771.1,
+        "runs": [
+          11193.3,
+          22348.9
+        ]
+      },
+      "messages_page": {
+        "median_rps": 20031.800000000003,
+        "runs": [
+          17990.4,
+          22073.2
+        ]
+      },
+      "sidebar": {
+        "median_rps": 28713.85,
+        "runs": [
+          27909.7,
+          29518.0
+        ]
+      },
+      "search": {
+        "median_rps": 25351.4,
+        "runs": [
+          28410.4,
+          22292.4
+        ]
+      }
+    }
+  }
+}

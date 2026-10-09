@@ -1,0 +1,50 @@
+### 01-normal-main image=main tree=go-pr mac_load={ 12.02 13.17 18.25 } vm_load=8.08 8.14 8.70 2/1115 12780 11:10:06
+    exit=0 10 samples 11:12:00
+### 02-normal-a image=a tree=go-pr-a mac_load={ 16.03 14.74 18.23 } vm_load=8.31 8.44 8.76 1/1008 18145 11:12:01
+    exit=0 10 samples 11:13:53
+### 03-normal-a image=a tree=go-pr-a mac_load={ 21.20 16.06 18.24 } vm_load=8.45 8.53 8.76 2/1008 23482 11:13:53
+    exit=0 10 samples 11:15:49
+### 04-normal-main image=main tree=go-pr mac_load={ 21.91 17.86 18.69 } vm_load=10.64 9.28 9.00 1/1012 28757 11:15:50
+    exit=0 10 samples 11:17:40
+### 05-normal-main image=main tree=go-pr mac_load={ 11.06 15.30 17.58 } vm_load=10.36 9.61 9.15 4/1007 34202 11:17:41
+    exit=0 10 samples 11:19:31
+### 06-normal-b image=b tree=go-pr-b mac_load={ 9.32 13.71 16.69 } vm_load=8.65 9.21 9.05 1/1007 39657 11:19:31
+    exit=0 10 samples 11:21:22
+### 07-normal-b image=b tree=go-pr-b mac_load={ 9.89 12.44 15.82 } vm_load=11.41 10.14 9.42 2/1007 45136 11:21:22
+    exit=0 10 samples 11:23:13
+### 08-normal-main image=main tree=go-pr mac_load={ 20.06 14.50 16.15 } vm_load=9.02 9.65 9.32 1/1008 50498 11:23:13
+    exit=0 10 samples 11:25:05
+### 09-mixed-main image=main tree=go-pr mac_load={ 23.70 18.41 17.53 } vm_load=9.63 9.64 9.34 4/1010 55826 11:25:05
+    exit=0 8 samples 11:26:36
+### 10-mixed-a image=a tree=go-pr-a mac_load={ 13.77 16.52 16.89 } vm_load=11.03 10.09 9.54 3/1011 60339 11:26:37
+    exit=0 8 samples 11:28:08
+### 11-mixed-a image=a tree=go-pr-a mac_load={ 11.75 15.24 16.37 } vm_load=9.90 9.91 9.52 3/1011 64892 11:28:08
+    exit=0 8 samples 11:29:38
+### 12-mixed-main image=main tree=go-pr mac_load={ 18.69 16.16 16.57 } vm_load=8.90 9.54 9.42 1/1009 69349 11:29:39
+    exit=0 8 samples 11:31:09
+### 13-mixed-main image=main tree=go-pr mac_load={ 21.70 18.72 17.56 } vm_load=10.62 9.98 9.59 1/1008 73712 11:31:10
+    exit=0 8 samples 11:32:41
+### 14-mixed-b image=b tree=go-pr-b mac_load={ 16.25 18.02 17.43 } vm_load=11.52 10.39 9.77 10/1010 78235 11:32:41
+    exit=0 8 samples 11:34:12
+### 15-mixed-b image=b tree=go-pr-b mac_load={ 11.89 16.00 16.70 } vm_load=9.96 10.07 9.70 1/1010 82794 11:34:12
+    exit=0 8 samples 11:35:42
+### 16-mixed-main image=main tree=go-pr mac_load={ 9.72 14.12 15.90 } vm_load=9.27 9.75 9.62 1/1011 87373 11:35:42
+    exit=0 8 samples 11:37:12
+ALL BLOCKS DONE 11:37:13
+### 17-normal-main image=main tree=go-pr mac_load={ 8.63 12.59 15.12 } vm_load=9.34 9.50 9.53 2/1009 91967 11:37:21
+    exit=0 10 samples 11:39:11
+### 18-normal-a image=a tree=go-pr-a mac_load={ 8.14 10.98 14.14 } vm_load=9.96 9.61 9.57 3/1010 97460 11:39:11
+    exit=0 10 samples 11:41:02
+### 19-normal-a image=a tree=go-pr-a mac_load={ 10.76 11.07 13.79 } vm_load=9.10 9.43 9.51 1/1010 3247 11:41:03
+    exit=0 10 samples 11:42:54
+### 20-normal-main image=main tree=go-pr mac_load={ 8.85 10.14 13.08 } vm_load=8.17 9.03 9.36 1/1011 8740 11:42:55
+    exit=0 10 samples 11:44:56
+### 21-normal-main image=main tree=go-pr mac_load={ 11.28 11.28 13.21 } vm_load=10.22 9.48 9.48 3/1012 14401 11:44:56
+    exit=0 10 samples 11:46:47
+### 22-normal-b image=b tree=go-pr-b mac_load={ 8.95 10.42 12.62 } vm_load=10.58 9.90 9.64 1/1009 19869 11:46:47
+    exit=0 10 samples 11:48:38
+### 23-normal-b image=b tree=go-pr-b mac_load={ 7.72 9.62 12.04 } vm_load=9.05 9.51 9.52 1/1009 25339 11:48:38
+    exit=0 10 samples 11:50:29
+### 24-normal-main image=main tree=go-pr mac_load={ 8.46 9.30 11.62 } vm_load=8.37 9.08 9.36 1/1012 30810 11:50:29
+    exit=0 10 samples 11:52:19
+ALL BLOCKS DONE 11:52:19

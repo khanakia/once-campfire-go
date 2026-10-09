@@ -1,0 +1,12 @@
+go round 1: room_show 16 clients 19569.4 req/s
+go round 1: messages_page 16 clients 20973.9 req/s
+go round 1: sidebar 16 clients 20256.2 req/s
+go round 1: search 16 clients 12882.6 req/s
+go round 1: post_message 16 clients 2913.4 req/s
+/bench/verification/bench/compare.rb:101:in 'block (2 levels) in <top (required)>': go: source changed between rounds (RuntimeError)
+	from /bench/verification/bench/compare.rb:90:in 'Array#each'
+	from /bench/verification/bench/compare.rb:90:in 'block in <top (required)>'
+	from <internal:numeric>:257:in 'Integer#times'
+	from /bench/verification/bench/compare.rb:88:in '<top (required)>'
+	from bin/benchmark:5:in 'Kernel#require_relative'
+	from bin/benchmark:5:in '<main>'

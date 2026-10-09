@@ -1,0 +1,49 @@
+go round 1: room_show 16 clients 25453.9 req/s
+go round 1: messages_page 16 clients 26000.7 req/s
+go round 1: sidebar 16 clients 27983.8 req/s
+go round 1: search 16 clients 26756.5 req/s
+go round 1: post_message 16 clients 3962.7 req/s
+go round 2: room_show 16 clients 22161.9 req/s
+go round 2: messages_page 16 clients 22530.4 req/s
+go round 2: sidebar 16 clients 28037.6 req/s
+go round 2: search 16 clients 27867.3 req/s
+go round 2: post_message 16 clients 3660.2 req/s
+{
+  "go": {
+    "room_show": {
+      "median_rps": 23807.9,
+      "runs": [
+        25453.9,
+        22161.9
+      ]
+    },
+    "messages_page": {
+      "median_rps": 24265.550000000003,
+      "runs": [
+        26000.7,
+        22530.4
+      ]
+    },
+    "sidebar": {
+      "median_rps": 28010.699999999997,
+      "runs": [
+        27983.8,
+        28037.6
+      ]
+    },
+    "search": {
+      "median_rps": 27311.9,
+      "runs": [
+        26756.5,
+        27867.3
+      ]
+    },
+    "post_message": {
+      "median_rps": 3811.45,
+      "runs": [
+        3962.7,
+        3660.2
+      ]
+    }
+  }
+}

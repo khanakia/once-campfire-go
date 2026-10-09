@@ -1,0 +1,25 @@
+{
+  "avg_bytes": 12822,
+  "conc": 16,
+  "errors": 0,
+  "gzip": true,
+  "invalid_reasons": {},
+  "invalid_responses": 0,
+  "latency": {
+    "max_ms": 11.743,
+    "mean_ms": 0.6,
+    "n": 210325,
+    "p50_ms": 0.413,
+    "p90_ms": 1.235,
+    "p99_ms": 2.903
+  },
+  "ok": 210325,
+  "path": "/rooms/486777696/messages?before=933434569",
+  "rps": 26284.2,
+  "secs": 8.0,
+  "statuses": {
+    "200": 210325
+  },
+  "validation": "route-contract-v1",
+  "generator_cpu_percent": 107.18542704418539
+}
